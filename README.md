@@ -15,6 +15,7 @@ The measurements above used multiple Kubernetes Pods on one RISC-V host.
 ## Repository
 
 - [`patches/ray/`](./patches/ray/) — Ray build and dependency compatibility patches.
+- [`images/`](./images/) — operator image recipe and dashboard dependencies.
 - Build, deployment, and experiment materials are being reviewed for publication.
 
 ## Acknowledgments
