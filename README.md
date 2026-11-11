@@ -16,7 +16,9 @@ The measurements above used multiple Kubernetes Pods on one RISC-V host.
 
 - [`patches/ray/`](./patches/ray/) — Ray build and dependency compatibility patches.
 - [`images/`](./images/) — operator image recipe and dashboard dependencies.
-- Build, deployment, and experiment materials are being reviewed for publication.
+- [`docs/build-baseline.md`](./docs/build-baseline.md) — build baseline and source patch notes.
+- [`docs/serve-performance.md`](./docs/serve-performance.md) — verified Serve performance findings.
+- Further build, deployment, and experiment materials are being reviewed for publication.
 
 ## Acknowledgments
 
