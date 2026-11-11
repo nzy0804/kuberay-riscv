@@ -1,0 +1,10 @@
+--- a/scripts/bootstrap-bazel-6.5.0.sh
++++ b/scripts/bootstrap-bazel-6.5.0.sh
+@@ -37,5 +37,5 @@
+ cd "$RAY_WORKDIR/src/bazel-6.5.0"
+ bash ./compile.sh
+ install -m 755 output/bazel "$RAY_WORKDIR/tools/bin/bazel"
+-"$RAY_WORKDIR/tools/bin/bazel" --output_user_root="$RAY_WORKDIR/cache/bazel" --server_javabase="$JAVA_HOME" --version
++"$RAY_WORKDIR/tools/bin/bazel" --output_user_root="$RAY_WORKDIR/cache/bazel" --server_javabase="$JAVA_HOME" version
+ date -Is
+
