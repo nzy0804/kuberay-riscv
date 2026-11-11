@@ -16,7 +16,9 @@
 
 - [`patches/ray/`](./patches/ray/)：Ray 构建和依赖适配补丁。
 - [`images/`](./images/)：operator 镜像构建文件和 dashboard 依赖。
-- 构建、部署及实验材料正在审阅并陆续整理。
+- [`docs/build-baseline.md`](./docs/build-baseline.md)：构建基线和源码补丁说明。
+- [`docs/serve-performance.md`](./docs/serve-performance.md)：Serve 性能结果。
+- 更多构建、部署及实验材料正在审阅并陆续整理。
 
 ## 致谢
 
