@@ -4,21 +4,18 @@
 
 在 RISC-V 环境中构建、部署 Ray 和 KubeRay，并研究性能瓶颈。
 
-## 项目亮点
-
-- 原生构建 Ray 2.52.0，适配 Abseil 和 Boost.Context 等依赖。
-- 在 Kubernetes 上部署和验证 Ray Core、RayJob、Serve、手动扩缩容与对象传输。
-- 通过 50 req/s 负载实验研究 Serve 路由、反馈和调度。
-
 ## 当前进展
 
-实验运行在单台 RISC-V 物理机的多个 Kubernetes Pod 上。同机对照和 60 分钟验证显示，每副本设置 `max_ongoing_requests=2` 后，持续运行表现得到改善。
+- 完成 Ray 2.52.0 的 RISC-V 原生构建，适配 Abseil 和 Boost.Context 等依赖。
+- 验证 Ray Core 任务与 actor、对象传输、KubeRay 部署、手动扩缩容、RayJob 和 Serve。
+- 将每副本 `max_ongoing_requests` 从 1 调整为 2，改善了 50 req/s 下 Serve 的持续运行表现。两槽位配置在四轮对照中完成 156,000 个请求、错误为 0；后续 60 分钟验证完成 180,000 个请求，其中 5 个返回 HTTP 503。
 
-两小时验证正在准备中：首次功能验收因探针事件未命中而中止，开销对照和主实验待进行。
+上述测量运行在单台 RISC-V 物理机的多个 Kubernetes Pod 上。
 
-## 项目材料
+## 仓库目录
 
-仓库围绕源码补丁、构建部署材料、实验代码和结果进行整理。wheel、容器镜像和原始测量数据等大型资产单独保存。
+- [`patches/ray/`](./patches/ray/)：Ray 构建和依赖适配补丁。
+- 构建、部署及实验材料正在审阅并陆续整理。
 
 ## 致谢
 
