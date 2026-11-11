@@ -1,0 +1,26 @@
+# Set BASE_IMAGE to a Python 3.11 RISC-V openEuler image when building.
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE}
+LABEL org.opencontainers.image.title="Ray 2.52.0 riscv64 functional experiment"
+LABEL org.opencontainers.image.revision="9527a555280fb9837ce73dabf01559c20656a456"
+ENV PYTHONUNBUFFERED=1 RAY_USAGE_STATS_ENABLED=0 HOME=/home/ray USER=ray LOGNAME=ray
+ENV VIRTUAL_ENV=/opt/ray-venv PATH=/opt/ray-venv/bin:$PATH
+COPY wheelhouse /tmp/ray-wheelhouse
+COPY requirements-dashboard.txt /tmp/requirements-dashboard.txt
+COPY dashboard-build /opt/ray-frontend
+RUN python3 -m venv --without-pip /opt/ray-venv \
+    && PYTHONPATH=/tmp/ray-wheelhouse/pip-25.0.1-py3-none-any.whl \
+      python3 -m pip install --no-index --find-links=/tmp/ray-wheelhouse \
+      'pip==25.0.1' 'setuptools==78.1.1' 'wheel==0.45.1' \
+    && python3 -m pip install --no-index --find-links=/tmp/ray-wheelhouse \
+      /tmp/ray-wheelhouse/ray-2.52.0-cp311-cp311-linux_riscv64.whl \
+      -r /tmp/requirements-dashboard.txt \
+    && python3 -m pip check \
+    && python3 -c "import ray, ray._raylet, ray.dashboard.optional_deps, shutil; from pathlib import Path; assert ray.__version__ == '2.52.0'; p=Path(ray.__file__).parent/'dashboard/client/build'; shutil.copytree('/opt/ray-frontend',p,dirs_exist_ok=True); assert (p/'index.html').is_file(); print(ray.__version__, ray.__file__)" \
+    && command -v bash wget grep \
+    && rm -rf /tmp/ray-wheelhouse /opt/ray-frontend
+RUN mkdir -p /home/ray && chown 1000:1000 /home/ray && chmod 0755 /home/ray
+USER 1000:1000
+WORKDIR /home/ray
+CMD ["bash"]
+
