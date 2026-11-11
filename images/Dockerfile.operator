@@ -1,0 +1,7 @@
+FROM docker.io/library/busybox@sha256:dc2d74b28e4cf8984fa52af1f39bc7c3d9c73760b41a74d629f5d11b1ab28616
+LABEL org.opencontainers.image.title="KubeRay v1.5.2 riscv64 operator"
+LABEL org.opencontainers.image.revision="9f65eca1d6226d20f9e7c340f2af27cc4a1c9985"
+COPY manager /manager
+USER 65532:65532
+ENTRYPOINT ["/manager"]
+
