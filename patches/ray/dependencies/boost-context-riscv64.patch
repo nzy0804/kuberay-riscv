@@ -1,0 +1,30 @@
+--- a/BUILD.boost
++++ b/BUILD.boost
+@@ -33,6 +33,14 @@
+     constraint_values = [
+         "@platforms//os:linux",
+         "@platforms//cpu:aarch64",
++    ],
++)
++
++config_setting(
++    name = "linux_riscv64",
++    constraint_values = [
++        "@platforms//os:linux",
++        "@platforms//cpu:riscv64",
+     ],
+ )
+ 
+@@ -96,6 +104,11 @@
+ ]]
+ 
+ BOOST_CTX_ASM_SOURCES = selects.with_or({
++    ":linux_riscv64": [
++        "libs/context/src/asm/jump_riscv64_sysv_elf_gas.S",
++        "libs/context/src/asm/make_riscv64_sysv_elf_gas.S",
++        "libs/context/src/asm/ontop_riscv64_sysv_elf_gas.S",
++    ],
+     (":linux_aarch64", ":android_aarch64"): [
+         "libs/context/src/asm/jump_arm64_aapcs_elf_gas.S",
+         "libs/context/src/asm/make_arm64_aapcs_elf_gas.S",
+
