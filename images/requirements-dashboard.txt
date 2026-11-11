@@ -1,0 +1,15 @@
+# Ray 2.52.0 dashboard/agent dependencies; profiling tools are not required here.
+aiohttp>=3.7
+aiohttp_cors
+colorful
+requests
+grpcio==1.76.0
+opencensus
+opentelemetry-sdk==1.37.0
+opentelemetry-exporter-prometheus==0.58b0
+opentelemetry-proto==1.37.0
+pydantic==1.10.24
+prometheus_client>=0.7.1
+smart_open
+virtualenv>=20.0.24,!=20.21.1
+
