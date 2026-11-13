@@ -1,0 +1,11 @@
+image:
+  repository: docker.io/niuziyu/kuberay-operator-riscv
+  tag: v1.5.2
+  pullPolicy: IfNotPresent
+
+nodeSelector:
+  kubernetes.io/os: linux
+  kubernetes.io/arch: riscv64
+
+# The operator watches the Helm release namespace by default in this mode.
+singleNamespaceInstall: true

@@ -1,0 +1,8 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../raycluster
+images:
+  - name: docker.io/niuziyu/ray-riscv
+    newName: docker.io/niuziyu/ray-serve-riscv
+    newTag: "2.52.0"
