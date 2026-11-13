@@ -60,11 +60,11 @@ kubectl delete namespace ray-riscv-demo --wait --timeout=5m
 
 ## 当前进展
 
-- 完成 Ray 2.52.0 的 RISC-V 原生构建，适配 Abseil 和 Boost.Context 等依赖。
-- 验证 Ray Core 任务与 actor、对象传输、KubeRay 部署、手动扩缩容、RayJob 和 Serve。
-- 将每副本 `max_ongoing_requests` 从 1 调整为 2，改善了 50 req/s 下 Serve 的持续运行表现。两槽位配置在四轮对照中完成 156,000 个请求、错误为 0；后续 60 分钟验证完成 180,000 个请求，其中 5 个返回 HTTP 503。
+- 完成 Ray 2.52.0 和 KubeRay v1.5.2 的 RISC-V 原生构建，已发布容器镜像以及 Ray、grpcio 的 Python 3.11 wheel。
+- 已验证 Ray Core、RayCluster、手动扩缩容、RayJob 和 RayService，并在单台 RISC-V 宿主机上完成六类基准的初步测量。
+- 在 50 req/s 下，可逆对照发现宿主机 `kmemleak` 自动扫描会触发 Serve 周期性退化。暂停扫描后，每副本并发上限为 1 和 2 的对照窗口均跑满 50 req/s，且零错误。[Serve 性能结果](./docs/serve-performance.md)
 
-上述测量运行在单台 RISC-V 物理机的多个 Kubernetes Pod 上。
+六类基准的覆盖范围和待验证事项见[项目进展](./docs/project-status.md)。
 
 ## 仓库目录
 
@@ -73,8 +73,8 @@ kubectl delete namespace ray-riscv-demo --wait --timeout=5m
 - [`images/`](./images/)：Ray 和 operator 的镜像构建文件及 dashboard 依赖。
 - [`deploy/`](./deploy/)：Helm 配置和 RayCluster 示例。
 - [`examples/`](./examples/)：冒烟测试和验证脚本。
+- [已发布的镜像和 wheel](./docs/artifact-inventory.md)
 - [`docs/serve-performance.md`](./docs/serve-performance.md)：Serve 性能结果。
-- 更多构建、部署及实验材料正在审阅并陆续整理。
 
 ## 致谢
 

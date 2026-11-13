@@ -60,11 +60,11 @@ kubectl delete namespace ray-riscv-demo --wait --timeout=5m
 
 ## Progress
 
-- Built Ray 2.52.0 on RISC-V and adapted Abseil and Boost.Context dependencies.
-- Validated Ray Core tasks and actors, object transfer, KubeRay deployment, manual scaling, RayJob, and Serve.
-- Improved sustained Serve performance at 50 requests/s by increasing `max_ongoing_requests` from 1 to 2 per replica. The two-slot configuration completed 156,000 requests without errors in four comparison runs; a subsequent 60-minute run completed 180,000 requests with five HTTP 503 responses.
+- Built Ray 2.52.0 and KubeRay v1.5.2 on RISC-V. Published container images and Python 3.11 wheels for Ray and grpcio.
+- Validated Ray Core, RayCluster, manual scaling, RayJob, and RayService. Completed initial measurements for six benchmark areas on one RISC-V host.
+- At 50 requests/s, a reversible test identified host `kmemleak` scanning as a trigger for periodic Serve degradation. With scanning paused, both per-replica concurrency limits (1 and 2) sustained 50 requests/s with zero errors in the comparison windows. [Serve findings](./docs/serve-performance.md)
 
-The measurements above used multiple Kubernetes Pods on one RISC-V host.
+See the [project status](./docs/project-status.md) for benchmark coverage and pending validation.
 
 ## Repository
 
@@ -73,8 +73,8 @@ The measurements above used multiple Kubernetes Pods on one RISC-V host.
 - [`images/`](./images/) — Ray and operator image recipes and dashboard dependencies.
 - [`deploy/`](./deploy/) — Helm values and RayCluster examples.
 - [`examples/`](./examples/) — smoke tests and validation drivers.
+- [Published images and wheels](./docs/artifact-inventory.md)
 - [`docs/serve-performance.md`](./docs/serve-performance.md) — verified Serve performance findings.
-- Further build, deployment, and experiment materials are being reviewed for publication.
 
 ## Acknowledgments
 
