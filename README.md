@@ -68,11 +68,11 @@ The measurements above used multiple Kubernetes Pods on one RISC-V host.
 
 ## Repository
 
+- [Build from source](./docs/build-baseline.md) — Bazel, the Ray wheel and the KubeRay operator.
 - [`patches/ray/`](./patches/ray/) — Ray build and dependency compatibility patches.
 - [`images/`](./images/) — Ray and operator image recipes and dashboard dependencies.
 - [`deploy/`](./deploy/) — Helm values and RayCluster examples.
 - [`examples/`](./examples/) — smoke tests and validation drivers.
-- [`docs/build-baseline.md`](./docs/build-baseline.md) — build baseline and source patch notes.
 - [`docs/serve-performance.md`](./docs/serve-performance.md) — verified Serve performance findings.
 - Further build, deployment, and experiment materials are being reviewed for publication.
 

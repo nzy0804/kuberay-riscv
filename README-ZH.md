@@ -68,11 +68,11 @@ kubectl delete namespace ray-riscv-demo --wait --timeout=5m
 
 ## 仓库目录
 
+- [源码构建](./docs/build-baseline.md)：构建 Bazel、Ray wheel 和 KubeRay operator。
 - [`patches/ray/`](./patches/ray/)：Ray 构建和依赖适配补丁。
 - [`images/`](./images/)：Ray 和 operator 的镜像构建文件及 dashboard 依赖。
 - [`deploy/`](./deploy/)：Helm 配置和 RayCluster 示例。
 - [`examples/`](./examples/)：冒烟测试和验证脚本。
-- [`docs/build-baseline.md`](./docs/build-baseline.md)：构建基线和源码补丁说明。
 - [`docs/serve-performance.md`](./docs/serve-performance.md)：Serve 性能结果。
 - 更多构建、部署及实验材料正在审阅并陆续整理。
 
