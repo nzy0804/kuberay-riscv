@@ -61,8 +61,8 @@ kubectl delete namespace ray-riscv-demo --wait --timeout=5m
 ## 当前进展
 
 - 完成 Ray 2.52.0 和 KubeRay v1.5.2 的 RISC-V 原生构建，已发布容器镜像以及 Ray、grpcio 的 Python 3.11 wheel。
-- 已验证 Ray Core、RayCluster、手动扩缩容、RayJob 和 RayService，并在单台 RISC-V 宿主机上完成六类基准的初步测量。
-- 在 50 req/s 下，可逆对照发现宿主机 `kmemleak` 自动扫描会触发 Serve 周期性退化。暂停扫描后，每副本并发上限为 1 和 2 的对照窗口均跑满 50 req/s，且零错误。[Serve 性能结果](./docs/serve-performance.md)
+- 已验证 Ray Core、RayCluster、手动扩缩容、RayJob 和 RayService。ARM64 和 RISC-V 各完成 B1–B6 正式基准 255 轮。[跨平台复测结果](./docs/cross-architecture.md)
+- 确认宿主机 `kmemleak` 自动扫描会触发 Serve 周期性退化。另一组 RISC-V 单副本实验在输入 100 req/s、并发上限为 2 时，让小请求正文随派发传递的实验补丁将正确吞吐中位数从 28.69 提高到 100.00 req/s，错误率中位数从 69.54% 降到 0%。[Serve 性能结果](./docs/serve-performance.md)
 
 六类基准的覆盖范围和待验证事项见[项目进展](./docs/project-status.md)。
 

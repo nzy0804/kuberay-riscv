@@ -1,6 +1,6 @@
 # Serve performance findings
 
-The evaluation used a single RISC-V host with a Kubernetes cluster and two Serve replicas. The offered rate was 50 requests/s.
+The initial evaluation used one RISC-V Kubernetes host, two Serve replicas and an offered load of 50 requests/s. The November 24 follow-up tested overload and source changes on the same platform. [ARM64 and RISC-V benchmark rerun](cross-architecture.md)
 
 ## Replica concurrency comparison
 
@@ -34,3 +34,30 @@ The original run finished with a validation failure because its event checker re
 - **Concurrency comparison:** Four 13-minute windows used per-replica limits of 2, 1, 1 and 2. All 156,000 requests succeeded at 50 requests/s. Successful RTT p95 ranged from 13.92 to 14.08 ms. A limit of 2 reduced head CPU use by about 0.06 cores in both pairs, with the same correct throughput and error rate at this offered load.
 
 Raising the limit from 1 to 2 improved sustained throughput in the original environment. With scanning paused, both limits handled 50 requests/s. These results quantify the effect of host and Serve configuration changes. The scan setting was restored and the cleanup audits passed after the interventions.
+
+## November 24 configuration comparison
+
+With scanning paused and two replicas, raising `max_ongoing_requests` from 1 to 2 increased median correct throughput from 24.33 to 38.83 requests/s under a 100 requests/s lightweight load. All four pairs improved, with a median paired gain of 60.37%. Median error rates were 74.78% and 60.13%, respectively. At 50 requests/s both configurations served every request, with a 7.00% median paired reduction in successful RTT p95 at the higher limit. All 16 formal windows passed the experiment checks, including restoration and cleanup.
+
+## November 24 source patch
+
+The experimental patch sends an already complete, single-frame HTTP request body of up to 4 KiB with the dispatch. The replica reads that frame directly and uses the existing channel for subsequent messages. In the test workload, every request that acquired a replica slot used the inline body in the patched arm, and the probes recorded zero Proxy body fetches in that arm.
+
+The native RISC-V comparison used Ray 2.52.0, one head-only Proxy, one replica and paused host scanning. Each rate-by-limit combination had six order-balanced pairs of 80-second measurement windows. The table shows results for 100 offered requests/s, using the median across the six windows per arm.
+
+| Per-replica limit | Correct throughput (req/s) | Error rate | Successful RTT p95 | Replica slot hold p95 |
+| ---: | ---: | ---: | ---: | ---: |
+| 1 | 14.86 → 30.62 | 83.89% → 67.53% | 4,826.78 → 4,756.50 ms | 117.12 → 63.91 ms |
+| 2 | 28.69 → 100.00 | 69.54% → 0% | 4,674.43 → 13.24 ms | 116.00 → 2.59 ms |
+
+Each pair improved correct throughput at both limits. The median paired gains were 106.75% and 248.49%, respectively. At limit 2, 47,998 of the 48,000 requests completed correctly during measurement and the remaining two completed correctly during drain. At 10 offered requests/s every request succeeded in both arms. Cleanup and scan restoration were verified.
+
+The result applies to the measured small JSON POST workload with diagnostics enabled in both arms. The prototype requires matching support in the Proxy and replica. Large or streamed uploads, other replica topologies and other architectures still need validation. The published images contain the original implementation.
+
+## Other source candidates
+
+| Candidate | Measured outcome on RISC-V |
+| --- | --- |
+| Untimed streaming feedback wait | Removed an extra async task in the pending path. In 20 paired component tests, median feedback latency fell by 4.45% across pairs. Tail latency, batch time and CPU varied between batches. |
+| Replica ASGI response queue | Reused the queue event to await producer completion. Thread CPU per response fell 31.8%–46.4% in the isolated queue tests. Neither HTTP workload met the end-to-end replica CPU target. |
+| Router warning coalescing | Reduced repeated warning calls. Both concurrency limits missed the throughput target in the single-replica rerun. |

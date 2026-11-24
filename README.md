@@ -61,8 +61,8 @@ kubectl delete namespace ray-riscv-demo --wait --timeout=5m
 ## Progress
 
 - Built Ray 2.52.0 and KubeRay v1.5.2 on RISC-V. Published container images and Python 3.11 wheels for Ray and grpcio.
-- Validated Ray Core, RayCluster, manual scaling, RayJob, and RayService. Completed initial measurements for six benchmark areas on one RISC-V host.
-- At 50 requests/s, a reversible test identified host `kmemleak` scanning as a trigger for periodic Serve degradation. With scanning paused, both per-replica concurrency limits (1 and 2) sustained 50 requests/s with zero errors in the comparison windows. [Serve findings](./docs/serve-performance.md)
+- Validated Ray Core, RayCluster, manual scaling, RayJob, and RayService. Completed 255 formal benchmark rounds per host across B1–B6 on ARM64 and RISC-V. [Cross-platform results](./docs/cross-architecture.md)
+- Identified host `kmemleak` scanning as a trigger for periodic Serve degradation. In a separate RISC-V test at 100 requests/s with one replica and a concurrency limit of two, an experimental small-request-body patch raised median correct throughput from 28.69 to 100.00 requests/s and reduced the median error rate from 69.54% to 0%. [Serve findings](./docs/serve-performance.md)
 
 See the [project status](./docs/project-status.md) for benchmark coverage and pending validation.
 
